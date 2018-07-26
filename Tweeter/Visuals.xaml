@@ -1,0 +1,189 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ct="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:tweeter="using:Tweeter"
+	xmlns:conv="using:Tweeter.Converters"
+	xmlns:local="using:Tweeter.Templates"
+    x:Class="Tweeter.Visuals">
+	
+	<conv:DateFormatConverter x:Name="FormatDate"/>
+	<conv:GetTwitterHandle x:Name="GetHandle"/>
+    <conv:GetUrlCard x:Name="GetUrlCard"/>
+    <conv:GetTweet x:Name="GetTweet"/>
+    <conv:IsRetweet x:Name="IsRetweet"/>
+
+    <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
+
+	<Style x:Key="BladeStyle" TargetType="ct:BladeItem">
+		<Setter Property="Width" Value="430"/>
+	</Style>
+    <Style x:Key="ListItemStyle" TargetType="Grid">
+        <Setter Property="Width" Value="400" />
+        <Setter Property="MinHeight" Value="150" />
+    </Style>
+    <Style x:Key="MetaButtons" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+
+    <DataTemplate x:Key="TweetTemplate" x:DataType="DataTemplate">
+        <Grid Style="{StaticResource ListItemStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
+            <CheckBox x:Name="IsRetweet" Visibility="Collapsed" Checked="{Binding Path=RetweetedStatus, Converter={StaticResource IsRetweet}}" />
+            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind Not(IsRetweet.Checked)}">
+                <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Border Height="28">
+                        <TextBlock Height="24" FontFamily="{StaticResource FontAwesome}" xml:space="preserve"><Run Text="&#xf079;&#160;"/></TextBlock>
+                    </Border>
+                    <TextBlock Text="{Binding Path=User.Name}" />
+                    <TextBlock Text=" retweeted"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Padding="5">
+                    <TextBlock Text="{Binding Path=User.Name}" Margin="0 0 8 0"  FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=User.ScreenName, Converter={StaticResource GetHandle}}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                    <TextBlock Text="&#x2981;" Margin="8 0" />
+                    <TextBlock Text="{Binding CreationDate, Converter={StaticResource FormatDate}}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <TextBlock Text="{Binding Text, Converter={StaticResource GetUrlCard}}" Padding="5" TextWrapping="WrapWholeWords" />
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*" MaxWidth="100"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Button x:Name="cmdComment" Content="&#xf075;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Button x:Name="cmdRetweet" Content="&#xf079;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Button x:Name="cmdLike" Content="&#xf004;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Button x:Name="cmdMessage" Content="&#xf0e0;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OldTweetTemplate">
+		<Grid Style="{StaticResource ListItemStyle}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="40"/>
+			</Grid.RowDefinitions>
+			<Grid Grid.Row="0">
+                <TextBlock Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />                
+                <StackPanel Orientation="Horizontal" Padding="5">
+					<TextBlock Text="{Binding Path=User.Name}" Margin="0 0 8 0"  FontWeight="Bold" />
+					<TextBlock Text="{Binding Path=User.ScreenName, Converter={StaticResource GetHandle}}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+					<TextBlock Text="&#x2981;" Margin="8 0" />
+					<TextBlock Text="{Binding CreationDate, Converter={StaticResource FormatDate}}" />
+				</StackPanel>
+			</Grid>
+            <Grid Grid.Row="1">
+                <TextBlock Text="{Binding Text, Converter={StaticResource GetUrlCard}}" Padding="5" TextWrapping="WrapWholeWords" />
+			</Grid>
+			<Grid Grid.Row="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="2.5*" MaxWidth="100"/>
+					<ColumnDefinition Width="2.5*"/>
+					<ColumnDefinition Width="2.5*"/>
+					<ColumnDefinition Width="2.5*"/>
+				</Grid.ColumnDefinitions>
+				<Grid Grid.Column="0">
+					<Button x:Name="cmdComment" Content="&#xf075;" Style="{StaticResource MetaButtons}" />
+				</Grid>
+				<Grid Grid.Column="1">
+					<Button x:Name="cmdRetweet" Content="&#xf079;" Style="{StaticResource MetaButtons}" />
+				</Grid>
+				<Grid Grid.Column="2">
+					<Button x:Name="cmdLike" Content="&#xf004;" Style="{StaticResource MetaButtons}" />
+				</Grid>
+				<Grid Grid.Column="3">
+					<Button x:Name="cmdMessage" Content="&#xf0e0;" Style="{StaticResource MetaButtons}" />
+				</Grid>
+			</Grid>
+		</Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RetweetTemplate">
+        <Grid Style="{StaticResource ListItemStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Border Height="28">
+                        <TextBlock Height="24" FontFamily="{StaticResource FontAwesome}" xml:space="preserve"><Run Text="&#xf079;&#160;"/></TextBlock>
+                    </Border>
+                    <TextBlock Text="{Binding Path=User.Name}" />
+                    <TextBlock Text=" retweeted"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Padding="5">
+                    <TextBlock Text="{Binding Path=RetweetedStatus.User.Name}" Margin="0 0 8 0"  FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=RetweetedStatus.User.ScreenName, Converter={StaticResource GetHandle}}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                    <TextBlock Text="&#x2981;" Margin="8 0" />
+                    <TextBlock Text="{Binding Path=RetweetedStatus.CreationDate, Converter={StaticResource FormatDate}}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <TextBlock Text="{Binding RetweetedStatus.Text}" Padding="5" TextWrapping="WrapWholeWords" />
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*" MaxWidth="100"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Button x:Name="cmdComment" Content="&#xf075;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Button x:Name="cmdRetweet" Content="&#xf079;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Button x:Name="cmdLike" Content="&#xf004;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Button x:Name="cmdMessage" Content="&#xf0e0;" Style="{StaticResource MetaButtons}" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+    
+</ResourceDictionary>

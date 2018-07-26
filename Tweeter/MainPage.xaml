@@ -1,0 +1,75 @@
+﻿<Page
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Tweeter.MainPage"
+	x:Name="PageMain">
+	
+	<NavigationView x:Name="navMain" ItemInvoked="navMain_Invoke">
+
+		<NavigationView.MenuItems>
+			<NavigationViewItem x:Name="navFeed" x:Uid="navFeed" Content="Twitter Feed" Tag="Feed">
+				<NavigationViewItem.Icon>
+					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf099;"/>
+				</NavigationViewItem.Icon>
+			</NavigationViewItem>
+			<NavigationViewItem x:Name="navNotify" x:Uid="navNotify" Content="Notifications" Tag="Notifications">
+				<NavigationViewItem.Icon>
+					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0f3;"/>
+				</NavigationViewItem.Icon>
+			</NavigationViewItem>
+			<NavigationViewItem x:Name="navInbox" x:Uid="navInbox" Content="Messages" Tag="Inbox">
+				<NavigationViewItem.Icon>
+					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0e0;"/>
+				</NavigationViewItem.Icon>
+			</NavigationViewItem>
+			<NavigationViewItem x:Name="navMoments" x:Uid="navMoments" Content="Moments" Tag="Moments">
+				<NavigationViewItem.Icon>
+					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0e7;"/>
+				</NavigationViewItem.Icon>
+			</NavigationViewItem>
+			<NavigationViewItem x:Name="navProfile" x:Uid="navProfile" Content="Twitter Profile" Tag="Profile">
+				<NavigationViewItem.Icon>
+					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf007;"/>
+				</NavigationViewItem.Icon>
+			</NavigationViewItem>
+        </NavigationView.MenuItems>
+
+		<!--<NavigationView.AutoSuggestBox>
+			<AutoSuggestBox x:Name="ASB" QueryIcon="Find"/>
+		</NavigationView.AutoSuggestBox>-->
+
+		<!--<NavigationView.HeaderTemplate>
+			<DataTemplate>
+				<Grid Margin="24,10,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource TitleTextBlockStyle}"
+							FontSize="28"
+							VerticalAlignment="Center"
+							Text="Tweeter"/>
+					<CommandBar Grid.Column="1"
+							HorizontalAlignment="Right"
+							VerticalAlignment="Top"
+							DefaultLabelPosition="Right"
+							Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+						<AppBarButton Label="Refresh" Icon="Refresh"/>
+					</CommandBar>
+				</Grid>
+			</DataTemplate>
+		</NavigationView.HeaderTemplate>-->
+
+		<Frame x:Name="ContentFrame" Margin="0">
+
+			<Frame.ContentTransitions>
+				<TransitionCollection>
+					<NavigationThemeTransition/>
+				</TransitionCollection>
+			</Frame.ContentTransitions>
+		</Frame>
+	</NavigationView>
+</Page>
