@@ -4,14 +4,12 @@
 	xmlns:ct="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:tweeter="using:Tweeter"
 	xmlns:conv="using:Tweeter.Converters"
-	xmlns:local="using:Tweeter.Templates"
-    x:Class="Tweeter.Visuals">
+	xmlns:local="using:Tweeter.Templates">
 	
 	<conv:DateFormatConverter x:Name="FormatDate"/>
 	<conv:GetTwitterHandle x:Name="GetHandle"/>
     <conv:GetUrlCard x:Name="GetUrlCard"/>
     <conv:GetTweet x:Name="GetTweet"/>
-    <conv:IsRetweet x:Name="IsRetweet"/>
 
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
@@ -37,8 +35,7 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
-            <CheckBox x:Name="IsRetweet" Visibility="Collapsed" Checked="{Binding Path=RetweetedStatus, Converter={StaticResource IsRetweet}}" />
-            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind Not(IsRetweet.Checked)}">
+            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="False">
                 <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
