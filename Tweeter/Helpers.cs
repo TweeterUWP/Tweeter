@@ -92,6 +92,9 @@ namespace Tweeter.Converters
 
             // hashtags, usermentions, and URLs all exist in the entities member
             // indices point to the location of each inside the tweet's text string.
+
+            // todo - overload Tweet class to add a new Tweet object containing EITHER the tweet or the retweet
+            // then we can use one DataTemplate with one set of bindings that display different members
             
             // display_text_range provides the index of the first character in a tweet's text
             // this is nonzero for tweets that are replies to other tweets (NOT RT or QT)
@@ -214,8 +217,8 @@ namespace Tweeter.Utils {
 			// set parameters
             // I'm going to have to do something about this so I'm not exposing the API key on GitHub...
 			string CallbackUri = "app://";
-			string ConsumerKey = "";
-			string ConsumerSecret = "";
+			string ConsumerKey = "MhpRmlMvGTaVrs2cTPMPzGRKB";
+			string ConsumerSecret = "jpbqyiLzv35x3gD6VpdjSEgrhu9p8T0q0yorjYlAf0nNPdOwB8";
 
 			// create an instance of the Twitter service
 			TwitterService.Instance.Initialize(ConsumerKey, ConsumerSecret, CallbackUri);
