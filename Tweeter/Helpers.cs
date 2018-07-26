@@ -212,9 +212,10 @@ namespace Tweeter.Utils {
 		public async void TwitterLogin()
 		{
 			// set parameters
-			string CallbackUri = "http://tweeter";
-			string ConsumerKey = "MhpRmlMvGTaVrs2cTPMPzGRKB";
-			string ConsumerSecret = "jpbqyiLzv35x3gD6VpdjSEgrhu9p8T0q0yorjYlAf0nNPdOwB8";
+            // I'm going to have to do something about this so I'm not exposing the API key on GitHub...
+			string CallbackUri = "app://";
+			string ConsumerKey = "";
+			string ConsumerSecret = "";
 
 			// create an instance of the Twitter service
 			TwitterService.Instance.Initialize(ConsumerKey, ConsumerSecret, CallbackUri);
