@@ -4,7 +4,9 @@
 	xmlns:ct="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:tweeter="using:Tweeter"
 	xmlns:conv="using:Tweeter.Converters"
-	xmlns:local="using:Tweeter.Templates">
+	xmlns:local="using:Tweeter.Templates"
+    xmlns:svc="using:Tweeter.Tweet"
+    x:Class="Tweeter.Visuals">
 	
 	<conv:DateFormatConverter x:Name="FormatDate"/>
 	<conv:GetTwitterHandle x:Name="GetHandle"/>
@@ -27,14 +29,16 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
     </Style>
 
-    <DataTemplate x:Key="TweetTemplate" x:DataType="DataTemplate">
+    <DataTemplate x:Key="TweetTemplate">
         <Grid Style="{StaticResource ListItemStyle}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
+            <TextBlock x:Name="txtTweetObj" Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
+            <CheckBox x:Name="chkIsRetweet" IsChecked="False" Visibility="Collapsed" />
             <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="False">
                 <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
                     <StackPanel.Resources>

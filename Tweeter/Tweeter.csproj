@@ -113,6 +113,10 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tweet.cs" />
+    <Compile Include="Visuals.xaml.cs">
+      <DependentUpon>Visuals.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

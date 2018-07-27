@@ -90,6 +90,8 @@ namespace Tweeter.Converters
             // example of changing tweet object data mid-stream
             Tweet t = value as Tweet;
 
+            // if I cast t to Tweet2, it's null and I don't know why.
+
             // hashtags, usermentions, and URLs all exist in the entities member
             // indices point to the location of each inside the tweet's text string.
 
@@ -295,7 +297,6 @@ namespace Tweeter.Utils {
                 //IEnumerable<Tweet> TwTweets = await TwitterService.Instance.GetUserTimeLineAsync(TwUser.ScreenName, 50);
                 List<Tweet> TwTweets = await TwitterService.Instance.RequestAsync(TwConfig, 100);
 
-                // todo: validate JSON coming from Twitter for a retweeted retweet or quote tweet
                 return TwTweets;
             }
         }
