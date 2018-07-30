@@ -33,7 +33,7 @@ namespace Tweeter
         private async void LoadFeed()
         {
             Utils.Loaders Loader = new Utils.Loaders();
-            List<Tweet> lstTweets = await Loader.GetFeedAsync();
+            List<Tweet2> lstTweets = await Loader.GetFeedAsync();
 
             lstFeed.ItemsSource = lstTweets;
         }

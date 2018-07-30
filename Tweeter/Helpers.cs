@@ -261,7 +261,7 @@ namespace Tweeter.Utils {
 
     public class Loaders
     {
-        public async Task<List<Tweet>> GetFeedAsync()
+        public async Task<List<Tweet2>> GetFeedAsync()
         {
             if (!await TwitterService.Instance.LoginAsync())
             {
@@ -297,7 +297,17 @@ namespace Tweeter.Utils {
                 //IEnumerable<Tweet> TwTweets = await TwitterService.Instance.GetUserTimeLineAsync(TwUser.ScreenName, 50);
                 List<Tweet> TwTweets = await TwitterService.Instance.RequestAsync(TwConfig, 100);
 
-                return TwTweets;
+                List<Tweet2> Tweets = new List<Tweet2>();
+
+                foreach (Tweet t in TwTweets)
+                {
+                    Tweet2 t2 = new Tweet2();
+                    t2.BaseTweet = t;
+
+                    Tweets.Add(t2);
+                }
+
+                return Tweets;
             }
         }
     }
