@@ -28,7 +28,7 @@ namespace Tweeter.Converters
 			if (diff.TotalHours > 24)
 			{
 				// if tweet is more than 24 hours old, display as MMM/dd
-				return dt.ToString("MMM/dd");
+				return dt.ToString("MMM dd");
 			}
 			else
 			{
@@ -64,83 +64,13 @@ namespace Tweeter.Converters
 		}
 	}
 
-    public class GetUrlCard : IValueConverter
+    public class DebugThis : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null)
-                return null;
-            
-            return value;
-        }
+            string IsRetweet = value.ToString();
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class GetTweet : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value == null)
-                return null;
-            
-            // example of changing tweet object data mid-stream
-            Tweet t = value as Tweet;
-
-            // if I cast t to Tweet2, it's null and I don't know why.
-
-            // hashtags, usermentions, and URLs all exist in the entities member
-            // indices point to the location of each inside the tweet's text string.
-
-            // todo - overload Tweet class to add a new Tweet object containing EITHER the tweet or the retweet
-            // then we can use one DataTemplate with one set of bindings that display different members
-            
-            // display_text_range provides the index of the first character in a tweet's text
-            // this is nonzero for tweets that are replies to other tweets (NOT RT or QT)
-            // For some reason twitter's DisplayTextRange doesn't always match the length of the tweet.
-            // I don't know why!
-            if(t.Text != null)
-            {
-                t.Text = t.Text.Substring(t.DisplayTextRange[0], (t.DisplayTextRange[1] - t.DisplayTextRange[0]));
-            }
-
-            // we need to do the same thing for retweets
-            if (t.RetweetedStatus != null)
-            {
-                int start = t.RetweetedStatus.DisplayTextRange[0];
-                int end = t.RetweetedStatus.DisplayTextRange[1];
-                string txt = t.RetweetedStatus.Text;
-                t.RetweetedStatus.Text = txt.Substring(start, (end - start));
-
-                                
-            }
-
-            // html decode text, because Twitter escapes < and >.
-            // this caused a JSON error and I don't know, because Newtonsoft.Json kind of sucks at error trapping.
-            // maybe if text is null it breaks? hell if I know.
-            if (t.Text != null)
-                t.Text = WebUtility.HtmlDecode(t.Text);
-
-            return t;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class IsRetweet : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value == null)
-                return false;
-            else
-                return true;
+            return IsRetweet;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -293,12 +223,15 @@ namespace Tweeter.Utils {
 					Query = "statuses/home_timeline.json",
 					QueryType = TwitterQueryType.Home
                 };
-
-                //IEnumerable<Tweet> TwTweets = await TwitterService.Instance.GetUserTimeLineAsync(TwUser.ScreenName, 50);
+                
+                // create a list of Tweet objects
                 List<Tweet> TwTweets = await TwitterService.Instance.RequestAsync(TwConfig, 100);
 
+                // instantiate a list of Tweet2 objects, which will allow adding additional metadata to the tweet object
                 List<Tweet2> Tweets = new List<Tweet2>();
 
+                // iterate through the list of Tweet objects and convert them to Tweet2 objects
+                // then add the Tweet2 objects to the new list
                 foreach (Tweet t in TwTweets)
                 {
                     Tweet2 t2 = new Tweet2();

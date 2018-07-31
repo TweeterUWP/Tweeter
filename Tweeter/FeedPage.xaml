@@ -9,9 +9,9 @@
 	x:Name="PageBlades"
     mc:Ignorable="d">
 
-    <Page.Resources>
+    <!--<Page.Resources>
         <local:TweetTemplateSelector  x:Name="TweetTemplateSelector" TweetTemplate="{StaticResource TweetTemplate}" RetweetTemplate="{StaticResource RetweetTemplate}"></local:TweetTemplateSelector>
-    </Page.Resources>
+    </Page.Resources>-->
 
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
@@ -39,7 +39,7 @@
                 <Grid>
                     <ListView x:Name="lstFeed" Width="430" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0"
                           SelectionChanged="lstFeed_SelectionChanged"
-                          ItemTemplateSelector="{StaticResource TweetTemplateSelector}" />
+                          ItemTemplate="{StaticResource TweetTemplate}" />
                 </Grid>
 			</ct:BladeItem>
         </ct:BladeView>

@@ -45,10 +45,10 @@ namespace Tweeter
             //Load a blade for the selected tweet
             //Tweet SelectedTweet = (sender as ListView).SelectedItem as Tweet;
 
-            Tweet SelectedTweet = theSender.SelectedItem as Tweet;
+            Tweet2 SelectedTweet = theSender.SelectedItem as Tweet2;
 
             // Create a new list of Tweet objects
-            List<Tweet> theTweet = new List<Tweet>();
+            List<Tweet2> theTweet = new List<Tweet2>();
 
             // Add selected tweet to list
             theTweet.Add(SelectedTweet);
@@ -69,7 +69,8 @@ namespace Tweeter
 
             BladeItem newBlade = new BladeItem();
 
-            newList.ItemTemplateSelector = (DataTemplateSelector)Resources["TweetTemplateSelector"];
+            //newList.ItemTemplateSelector = (DataTemplateSelector)Resources["TweetTemplateSelector"];
+            newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
 
             newBlade.Content = newList;
 

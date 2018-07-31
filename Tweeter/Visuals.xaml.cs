@@ -13,9 +13,6 @@ namespace Tweeter
             InitializeComponent();
         }
 
-        public bool IsRetweet(object obj)
-        {
-            return false;
-        }
+        private bool Not(bool? value) { return true; }
     }
 }

@@ -9,9 +9,8 @@
     x:Class="Tweeter.Visuals">
 	
 	<conv:DateFormatConverter x:Name="FormatDate"/>
-	<conv:GetTwitterHandle x:Name="GetHandle"/>
-    <conv:GetUrlCard x:Name="GetUrlCard"/>
-    <conv:GetTweet x:Name="GetTweet"/>
+    <conv:GetTwitterHandle x:Name="GetHandle"/>
+    <conv:DebugThis x:Name="DebugThis"/>
 
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
@@ -29,17 +28,16 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
     </Style>
 
-    <DataTemplate x:Key="TweetTemplate">
+    <DataTemplate x:Key="TweetTemplate" x:DataType="tweeter:Tweet2">
         <Grid Style="{StaticResource ListItemStyle}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="txtTweetObj" Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
-            <CheckBox x:Name="chkIsRetweet" IsChecked="False" Visibility="Collapsed" />
-            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="False">
+            <!--<TextBlock x:Name="txtTweetObj" Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />-->
+            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind (x:Boolean)IsRetweet, Converter={StaticResource DebugThis}}">
                 <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
@@ -56,14 +54,15 @@
             </Grid>
             <Grid Grid.Row="1">
                 <StackPanel Orientation="Horizontal" Padding="5">
-                    <TextBlock Text="{Binding Path=User.Name}" Margin="0 0 8 0"  FontWeight="Bold" />
-                    <TextBlock Text="{Binding Path=User.ScreenName, Converter={StaticResource GetHandle}}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                    <TextBlock Text="{Binding Path=Tweet.User.Name}" Margin="0 0 8 0"  FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=Tweet.User.ScreenName, Converter={StaticResource GetHandle}}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
                     <TextBlock Text="&#x2981;" Margin="8 0" />
-                    <TextBlock Text="{Binding CreationDate, Converter={StaticResource FormatDate}}" />
+                    <TextBlock Text="{Binding Path=Tweet.CreationDate, Converter={StaticResource FormatDate}}" />
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <TextBlock Text="{Binding Text, Converter={StaticResource GetUrlCard}}" Padding="5" TextWrapping="WrapWholeWords" />
+                <!--<TextBlock Text="{Binding Text}" Padding="5" TextWrapping="WrapWholeWords" />-->
+                <TextBlock Text="{Binding IsRetweet, Converter={StaticResource DebugThis}}"/>
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
