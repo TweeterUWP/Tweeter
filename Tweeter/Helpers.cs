@@ -68,12 +68,7 @@ namespace Tweeter.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string IsRetweet = "Collapsed";
-
-            if ((bool)value == true)
-                IsRetweet = "Visible";
-
-            return IsRetweet;
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
