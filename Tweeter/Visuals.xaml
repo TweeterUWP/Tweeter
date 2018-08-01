@@ -31,13 +31,14 @@
     <DataTemplate x:Key="TweetTemplate" x:DataType="tweeter:Tweet2">
         <Grid Style="{StaticResource ListItemStyle}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="28"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <!--<TextBlock x:Name="txtTweetObj" Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />-->
-            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind (x:Boolean)IsRetweet, Converter={StaticResource DebugThis}}">
+            <!--<Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind IsRetweet, Converter={StaticResource DebugThis}}">-->
+            <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind IsRetweet}" Height="28">
                 <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
@@ -61,8 +62,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <!--<TextBlock Text="{Binding Text}" Padding="5" TextWrapping="WrapWholeWords" />-->
-                <TextBlock Text="{Binding IsRetweet, Converter={StaticResource DebugThis}}"/>
+                <TextBlock Text="{x:Bind Text}" Padding="5" TextWrapping="WrapWholeWords" />
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>

@@ -4,16 +4,13 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ct="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:tweeter="using:Tweeter"
     xmlns:local="using:Tweeter.Templates"
     x:Class="Tweeter.FeedPage"
 	x:Name="PageBlades"
     mc:Ignorable="d">
 
-    <!--<Page.Resources>
-        <local:TweetTemplateSelector  x:Name="TweetTemplateSelector" TweetTemplate="{StaticResource TweetTemplate}" RetweetTemplate="{StaticResource RetweetTemplate}"></local:TweetTemplateSelector>
-    </Page.Resources>-->
-
-	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="mobile">
@@ -35,11 +32,10 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ct:BladeView x:Name="bladeView">
-            <ct:BladeItem IsOpen="True" TitleBarVisibility="Collapsed" BorderThickness="0" Style="{StaticResource BladeStyle}">
+            <ct:BladeItem IsOpen="True" TitleBarVisibility="Collapsed" BorderThickness="0" Style="{StaticResource BladeStyle}" Margin="0 28 0 0">
                 <Grid>
                     <ListView x:Name="lstFeed" Width="430" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0"
-                          SelectionChanged="lstFeed_SelectionChanged"
-                          ItemTemplate="{StaticResource TweetTemplate}" />
+                          SelectionChanged="lstFeed_SelectionChanged" ItemTemplate="{StaticResource TweetTemplate}" />
                 </Grid>
 			</ct:BladeItem>
         </ct:BladeView>

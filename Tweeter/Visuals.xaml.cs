@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
 
 namespace Tweeter
 {
@@ -13,6 +14,6 @@ namespace Tweeter
             InitializeComponent();
         }
 
-        private bool Not(bool? value) { return true; }
+        public bool Not(bool? value) { return true; }
     }
 }
