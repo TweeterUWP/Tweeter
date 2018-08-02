@@ -133,18 +133,18 @@ namespace Tweeter
             }
         }
 
-        public Entity[] TweetEntities
+        public TweetEntity[] TweetEntities
         {
             get
             {
                 TwitterHashtag[] hashtags = _Tweet.Entities.Hashtags;
                 TwitterUserMention[] usermentions = _Tweet.Entities.UserMentions;
 
-                List<Entity> ents = new List<Entity>();
+                List<TweetEntity> ents = new List<TweetEntity>();
 
                 foreach (TwitterHashtag h in hashtags)
                 {
-                    Entity e = new Entity
+                    TweetEntity e = new TweetEntity
                     {
                         Type = "#",
                         Value = h.Text,
@@ -152,6 +152,16 @@ namespace Tweeter
                     };
 
                     ents.Add(e);
+                }
+
+                foreach (TwitterUserMention m in usermentions)
+                {
+                    TweetEntity e = new TweetEntity
+                    {
+                        Type = "@",
+                        Value = m.ScreenName,
+                        Indices = m.Indices
+                    };
                 }
 
                 return ents.ToArray();
