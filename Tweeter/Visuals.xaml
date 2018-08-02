@@ -5,7 +5,7 @@
     xmlns:tweeter="using:Tweeter"
 	xmlns:conv="using:Tweeter.Converters"
 	xmlns:local="using:Tweeter.Templates"
-    xmlns:svc="using:Tweeter.Tweet"
+    xmlns:svc="using:Tweeter.Tweet2"
     x:Class="Tweeter.Visuals">
 	
 	<conv:DateFormatConverter x:Name="FormatDate"/>

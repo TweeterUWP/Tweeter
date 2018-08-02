@@ -139,7 +139,8 @@ namespace Tweeter
             {
                 TwitterHashtag[] hashtags = _Tweet.Entities.Hashtags;
                 TwitterUserMention[] usermentions = _Tweet.Entities.UserMentions;
-
+                TwitterSymbol[] symbols = _Tweet.Entities.Symbols;
+                
                 List<TweetEntity> ents = new List<TweetEntity>();
 
                 foreach (TwitterHashtag h in hashtags)
@@ -163,6 +164,23 @@ namespace Tweeter
                         Indices = m.Indices
                     };
                 }
+
+                foreach (TwitterSymbol s in symbols)
+                {
+                    TweetEntity e = new TweetEntity
+                    {
+                        Type = "$",
+                        Value = s.Text,
+                        Indices = s.Indices
+                    };
+                }
+
+                // turn the list into an array
+                TweetEntity[] te = ents.ToArray();
+
+                // sort the array by starting index
+                // this might make it easier to do the needful with this data
+                Array.Sort(te, delegate (TweetEntity a, TweetEntity b) { return a.Indices[0].CompareTo(b.Indices[0]); });
 
                 return ents.ToArray();
             }

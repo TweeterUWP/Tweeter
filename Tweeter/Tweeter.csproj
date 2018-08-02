@@ -113,6 +113,7 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TweetEntity.cs" />
     <Compile Include="Tweet.cs" />
     <Compile Include="Visuals.xaml.cs">
       <DependentUpon>Visuals.xaml</DependentUpon>
@@ -208,8 +209,11 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.0-Preview1-26502-02</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Services">
+      <Version>4.0.0-build.27</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Services">
-      <Version>3.1.0-build.65</Version>
+      <Version>4.0.0-build.27</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>3.0.0-build.105.g6b894808d4</Version>
