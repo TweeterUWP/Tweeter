@@ -133,21 +133,23 @@ namespace Tweeter
             }
         }
 
-        public Entities[] Entities
+        public Entity[] TweetEntities
         {
             get
             {
                 TwitterHashtag[] hashtags = _Tweet.Entities.Hashtags;
                 TwitterUserMention[] usermentions = _Tweet.Entities.UserMentions;
 
-                List<Entities> ents = new List<Entities>();
+                List<Entity> ents = new List<Entity>();
 
                 foreach (TwitterHashtag h in hashtags)
                 {
-                    Entities e = new Entities();
-                    e.Type = "#";
-                    e.Value = h.Text;
-                    e.Indices = h.Indices;
+                    Entity e = new Entity
+                    {
+                        Type = "#",
+                        Value = h.Text,
+                        Indices = h.Indices
+                    };
 
                     ents.Add(e);
                 }

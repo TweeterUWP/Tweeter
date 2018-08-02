@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tweeter
 {
-    public class Entities
+    public class Entity
     {
         public string Type { get; set; }
         public string Value { get; set; }
