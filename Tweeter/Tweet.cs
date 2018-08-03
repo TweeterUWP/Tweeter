@@ -16,6 +16,10 @@ namespace Tweeter
         private Tweet _Tweet;
         private string _Text;
 
+        private List<object> _temp;
+
+        public object obj;
+
         /// <summary>
         /// The original tweet object
         /// </summary>
@@ -77,62 +81,6 @@ namespace Tweeter
             }
         }
 
-        public string Text
-        {
-            get
-            {
-                _Text = _Tweet.Text;
-
-                if (_Text != null)
-                {
-                    // display only the text in the DisplayTextRange indices
-                    _Text = _Tweet.Text.Substring(_Tweet.DisplayTextRange[0], (_Tweet.DisplayTextRange[1] - _Tweet.DisplayTextRange[0]));
-
-                    // html decode text, because Twitter escapes < and >.
-                    _Text = WebUtility.HtmlDecode(_Text);
-
-                    // should probably link @usernames and #hashtags somehow.
-
-                    // if hashtags are present, this won't be null
-                    if (_Tweet.Entities.Hashtags != null)
-                    {
-                        // iterate through hashtags
-                        // each hashtag has an int[] pair of indices and a string containing the hashtag
-                        // _Text should be updated to turn hashtags into hyperlinks
-
-                        // text before first hyperlink needs to be wrapped in <run></run> tags
-                        // then the hyperlink
-                        // then the next block of text before the next hyperlink
-                        // then the next hyperlink
-                        // finish when at the end of the string
-
-                        TwitterHashtag[] hashtags = _Tweet.Entities.Hashtags;
-
-                        // get the Tweet text up to the first hashtag
-                        List<string> strings = new List<string>();
-
-                        string strStart = _Text.Substring(0, hashtags[0].Indices[0]);
-
-                        strings.Add(strStart);
-
-                        foreach (TwitterHashtag h in hashtags)
-                        {
-                            int start = h.Indices[0];
-                            int end = h.Indices[1];
-                            int length = end - start;
-
-                            Hyperlink link = new Hyperlink();
-
-                        }
-                    }
-                }
-
-                _Tweet.Text = _Text;
-
-                return _Text;
-            }
-        }
-
         public TweetEntity[] TweetEntities
         {
             get
@@ -163,6 +111,8 @@ namespace Tweeter
                         Value = m.ScreenName,
                         Indices = m.Indices
                     };
+
+                    ents.Add(e);
                 }
 
                 foreach (TwitterSymbol s in symbols)
@@ -173,6 +123,8 @@ namespace Tweeter
                         Value = s.Text,
                         Indices = s.Indices
                     };
+
+                    ents.Add(e);
                 }
 
                 // turn the list into an array
@@ -182,7 +134,31 @@ namespace Tweeter
                 // this might make it easier to do the needful with this data
                 Array.Sort(te, delegate (TweetEntity a, TweetEntity b) { return a.Indices[0].CompareTo(b.Indices[0]); });
 
-                return ents.ToArray();
+                return te;
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                _Text = _Tweet.Text;
+
+                if (_Text != null)
+                {
+                    // display only the text in the DisplayTextRange indices
+
+                    // this is barfing because somehow the Text attribute from the toolkit is converting HTML encoded entities back into regular characters
+                    // this breaks the DisplayTextRange attribute, so we'll have to go fix that shit first.
+                    _Text = _Tweet.Text.Substring(_Tweet.DisplayTextRange[0], (_Tweet.DisplayTextRange[1] - _Tweet.DisplayTextRange[0]));
+
+                    // html decode text, because Twitter escapes < and >.
+                    _Text = WebUtility.HtmlDecode(_Text);
+                }
+
+                _Tweet.Text = _Text;
+
+                return _Text;
             }
         }
     }
