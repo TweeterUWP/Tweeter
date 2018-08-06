@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Documents;
 using Microsoft.Toolkit.Uwp.Services.Twitter;
+using Windows.UI.Xaml.Data;
 
 namespace Tweeter
 {
@@ -16,9 +17,10 @@ namespace Tweeter
         private Tweet _Tweet;
         private string _Text;
 
-        private List<object> _temp;
-
-        public object obj;
+        /// <summary>
+        /// Gets or sets inlines array
+        /// </summary>
+        public List<Inline> Inlines { get; set; }
 
         /// <summary>
         /// The original tweet object
@@ -147,19 +149,21 @@ namespace Tweeter
                 if (_Text != null)
                 {
                     // display only the text in the DisplayTextRange indices
-
-                    // this is barfing because somehow the Text attribute from the toolkit is converting HTML encoded entities back into regular characters
-                    // this breaks the DisplayTextRange attribute, so we'll have to go fix that shit first.
                     _Text = _Tweet.Text.Substring(_Tweet.DisplayTextRange[0], (_Tweet.DisplayTextRange[1] - _Tweet.DisplayTextRange[0]));
 
                     // html decode text, because Twitter escapes < and >.
                     _Text = WebUtility.HtmlDecode(_Text);
                 }
 
-                _Tweet.Text = _Text;
+               // _Tweet.Text = _Text;
 
                 return _Text;
             }
+        }
+
+        public Tweet2 ShallowCopy()
+        {
+            return (Tweet2)this.MemberwiseClone();
         }
     }
 }

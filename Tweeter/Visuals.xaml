@@ -4,12 +4,13 @@
 	xmlns:ct="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:tweeter="using:Tweeter"
 	xmlns:conv="using:Tweeter.Converters"
-	xmlns:local="using:Tweeter.Templates"
+    xmlns:util="using:Tweeter.Utils"
     xmlns:svc="using:Tweeter.Tweet2"
     x:Class="Tweeter.Visuals">
 	
 	<conv:DateFormatConverter x:Name="FormatDate"/>
     <conv:GetTwitterHandle x:Name="GetHandle"/>
+    <conv:GetTweet x:Name="GetTweet"/>
 
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
@@ -18,7 +19,7 @@
 	</Style>
     <Style x:Key="ListItemStyle" TargetType="Grid">
         <Setter Property="Width" Value="400" />
-        <Setter Property="MinHeight" Value="150" />
+        <Setter Property="MinHeight" Value="50" />
     </Style>
     <Style x:Key="MetaButtons" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -35,6 +36,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
+            <TextBlock x:Name="txtTweetObj" Text="{Binding Converter={StaticResource GetTweet}}" Visibility="Collapsed" />
             <Grid Grid.Row="0" x:Name="RetweetedBy" x:Load="{x:Bind IsRetweet}" Height="28">
                 <StackPanel Orientation="Horizontal" Padding="4 8 4 0">
                     <StackPanel.Resources>
@@ -59,7 +61,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
-                <TextBlock Text="{x:Bind Path=Tweet.Text}" Padding="5" TextWrapping="WrapWholeWords"/>
+                <TextBlock util:InlineXaml.Inlines="{x:Bind Inlines}"  Padding="5" TextWrapping="WrapWholeWords"/>
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>

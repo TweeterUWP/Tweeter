@@ -15,56 +15,56 @@ using Windows.UI.Xaml.Documents;
 
 namespace Tweeter.Converters
 {
-	public class DateFormatConverter : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, string language)
-		{
-			if (value == null)
-				return null;
+    public class DateFormatConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null)
+                return null;
 
-			DateTime dt = DateTime.Parse(value.ToString());
-			DateTime now = DateTime.Now;
+            DateTime dt = DateTime.Parse(value.ToString());
+            DateTime now = DateTime.Now;
 
-			TimeSpan diff = now - dt;
+            TimeSpan diff = now - dt;
 
-			if (diff.TotalHours > 24)
-			{
-				// if tweet is more than 24 hours old, display as MMM/dd
-				return dt.ToString("MMM dd");
-			}
-			else
-			{
-				// if tweet is less than 24 hours old, display time
-				// follow hours/minutes/seconds format of website
-				double h = Math.Round(diff.TotalHours);
-				double m = Math.Round(diff.TotalMinutes);
-				double s = Math.Round(diff.TotalSeconds);
+            if (diff.TotalHours > 24)
+            {
+                // if tweet is more than 24 hours old, display as MMM/dd
+                return dt.ToString("MMM dd");
+            }
+            else
+            {
+                // if tweet is less than 24 hours old, display time
+                // follow hours/minutes/seconds format of website
+                double h = Math.Round(diff.TotalHours);
+                double m = Math.Round(diff.TotalMinutes);
+                double s = Math.Round(diff.TotalSeconds);
 
-				return h > 0 ? h + "h" : ( m > 0 ? m + "m" : s + "s");
-			}
-		}
+                return h > 0 ? h + "h" : (m > 0 ? m + "m" : s + "s");
+            }
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, string language)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
-	public class GetTwitterHandle : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, string language)
-		{
-			if (value == null)
-				return null;
+    public class GetTwitterHandle : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null)
+                return null;
 
-			return "@" + value;
-		}
+            return "@" + value;
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, string language)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class DebugThis : IValueConverter
     {
@@ -78,66 +78,24 @@ namespace Tweeter.Converters
             throw new NotImplementedException();
         }
     }
-}
 
-namespace Tweeter.Templates
-{
-	public class TweetTemplateSelector : DataTemplateSelector
-	{
-		public DataTemplate TweetTemplate { get; set; }
-		public DataTemplate RetweetTemplate { get; set; }
-		public DataTemplate QuotedTemplate { get; set; }
-		public DataTemplate VideoTemplate { get; set; }
-		public DataTemplate ImageTemplate { get; set; }
-		public DataTemplate LinkTemplate { get; set; }
-
-		protected override DataTemplate SelectTemplateCore(object obj)
-		{
-            // this is to facilitate using different DataTemplates for different tweet types.
-            // Sauce: http://www.teixeira-soft.com/bluescreen/2016/03/23/c-how-to-dinamicaly-select-a-datatemplate-for-each-item-in-a-list/
-            // if TweetData includes a Retweet member, use that!
-            Tweet TweetData = obj as Tweet;
-
-			// urls are in an array under TweetData.Entities.Urls
-
-			// Tweet : TweetData.Text
-			// Retweet : TweetData.RetweetedStatus
-			// Quoted : TweetData.QuotedStatus
-			// Video: TweetData.Entities.Media[0].MediaUrl (thumbnail) & .Url (tweet)
-			// Image : TweetData.ExtendedEntities.Media[i].MediaUrl (direct link) & .Url (tweet)
-			//		Image only: .URL should be identical to TweetData.Text
-			//		Image with text: TweetData.Text will END with .URL
-			//		Multiple images: first image is in TweetData.Entities.Media[0]
-			// Link : TweetData.Entities.Urls
-			//		This array may have more than one URL member
-
-			if (TweetData.RetweetedStatus != null)
-			{
-                // this determines the datatemplate to return
-                // return RetweetTemplate;
-                return TweetTemplate;
-			}
-			else
-			{
-                return TweetTemplate;
-			}
-		}
-
-        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+    public class GetTweet : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
-            Tweet TweetData = item as Tweet;
-            if (TweetData.RetweetedStatus != null)
-            {
-                // this determines the datatemplate to return
-                // return RetweetTemplate;
-                return TweetTemplate;
-            }
-            else
-            {
-                return TweetTemplate;
-            }
+            if (value == null)
+                return null;
+
+            return value as Tweet2;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
     }
+
+
 }
 
 namespace Tweeter.Utils { 
@@ -242,6 +200,43 @@ namespace Tweeter.Utils {
 
                 return Tweets;
             }
+        }
+    }
+
+    public static class InlineXaml
+    {
+        public static readonly DependencyProperty InlinesProperty = DependencyProperty.RegisterAttached("Inlines", typeof(ICollection<Inline>), typeof(InlineXaml), new PropertyMetadata(default(ICollection<Inline>), PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is TextBlock tb)) return;
+
+            tb.Inlines.Clear();
+
+            if (!(e.NewValue is ICollection<Inline> inlines)) return;
+
+            foreach (var inline in inlines)
+            {
+                try
+                {
+                    tb.Inlines.Add(inline);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                    
+            }
+        }
+
+        public static void SetInlines(DependencyObject element, ICollection<Inline> value)
+        {
+            element.SetValue(InlinesProperty, value);
+        }
+
+        public static ICollection<Inline> GetInlines(DependencyObject element)
+        {
+            return (ICollection<Inline>)element.GetValue(InlinesProperty);
         }
     }
 }

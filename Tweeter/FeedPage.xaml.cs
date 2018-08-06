@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Microsoft.Toolkit.Uwp.Services.Twitter;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Documents;
@@ -36,7 +27,12 @@ namespace Tweeter
             Utils.Loaders Loader = new Utils.Loaders();
             List<Tweet2> lstTweets = await Loader.GetFeedAsync();
 
-            foreach(Tweet2 t in lstTweets)
+            lstFeed.ItemsSource = FormatEntities(lstTweets);
+        }
+
+        private List<Tweet2> FormatEntities(List<Tweet2> TweetList)
+        {
+            foreach (Tweet2 t in TweetList)
             {
                 // should probably link @usernames and #hashtags somehow. also symbols.
 
@@ -49,7 +45,8 @@ namespace Tweeter
 
                     // this will be our list of objects - either <run> or <hyperlink> XAML elements
                     List<object> things = new List<object>();
-                    
+                    List<Inline> inlines = new List<Inline>();
+
                     foreach (TweetEntity tx in t.TweetEntities)
                     {
                         int start = tx.Indices[0];
@@ -61,33 +58,58 @@ namespace Tweeter
 
                         if (start > i)
                         {
-                            string temp = t.Text.Substring(i, start - i);
-                            Run runtemp = new Run();
+                            string temp = t.Tweet.Text.Substring(i, start - i);
+                            Run runtemp = new Run
+                            {
+                                Text = temp
+                            };
 
-                            runtemp.Text = temp;
-
-                            things.Add(runtemp);
+                            Inline iline = runtemp;
+                            inlines.Add(iline);
                         }
 
                         Hyperlink link = new Hyperlink();
                         link.NavigateUri = new Uri("http://bing.com");
 
                         Run run = new Run();
-                        run.Text = t.Text.Substring(start, len - 1);
+                        run.Text = t.Tweet.Text.Substring(start, len);
 
                         link.Inlines.Add(run);
 
-                        things.Add(link);
+                        Inline iline2 = link;
+                        inlines.Add(iline2);
 
                         // set i to equal the end of the entity, so we know where to start the next block of text
                         i = end;
                     }
 
-                    t.obj = things;
+                    if (i < t.Tweet.Text.Length)
+                    {
+                        // tweet ends with text, not an entity
+                        string temp = t.Tweet.Text.Substring(i, t.Tweet.Text.Length - i);
+                        Run runtemp = new Run
+                        {
+                            Text = temp
+                        };
+
+                        Inline iline = runtemp;
+                        inlines.Add(iline);
+                    }
+                    t.Inlines = inlines;
+                }
+                else
+                {
+                    //tweet is just text, so we need a single inline
+                    Run runtemp = new Run { Text = t.Text };
+
+                    List<Inline> inlines = new List<Inline>();
+                    Inline iline = runtemp;
+                    inlines.Add(iline);
+                    t.Inlines = inlines;
                 }
             }
 
-            lstFeed.ItemsSource = lstTweets;
+            return TweetList;
         }
 
         private void lstFeed_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -97,7 +119,8 @@ namespace Tweeter
             //Load a blade for the selected tweet
             //Tweet SelectedTweet = (sender as ListView).SelectedItem as Tweet;
 
-            Tweet2 SelectedTweet = theSender.SelectedItem as Tweet2;
+            Tweet2 SelectedTweet = (theSender.SelectedItem as Tweet2).ShallowCopy();
+
 
             // Create a new list of Tweet objects
             List<Tweet2> theTweet = new List<Tweet2>();
@@ -105,18 +128,32 @@ namespace Tweeter
             // Add selected tweet to list
             theTweet.Add(SelectedTweet);
 
+            // TODO
+            // - use search API to retreive tweet responses. this will be inexact at best, but whatevs.
+
             // create a new listview control
             ListView newList = new ListView();
 
             // populate listview with selected tweet
-            newList.ItemsSource = theTweet;
+            newList.ItemsSource = FormatEntities(theTweet);
 
             // if the sender is lstFeed and Tweet01 already exists, replace Tweet01 content
             // if Tweet01 doesn't exist, create a new blade and populate it.
 
             if (theSender.Name == "lstFeed")
             {
+                IList<BladeItem> bi = bladeView.ActiveBlades;
 
+                try
+                {
+                    // this SHOULD return the BladeItem named Tweet01, but it isn't.
+                    // I don't know why.
+                    BladeItem theItem = bi.First(item => item.Name.Equals("Tweet01"));
+                }
+                catch
+                {
+                    // ain't nothing there
+                }
             }
 
             BladeItem newBlade = new BladeItem();
@@ -127,6 +164,8 @@ namespace Tweeter
             newBlade.Content = newList;
 
             newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
+
+            newBlade.Name = "Tweet01";
 
             bladeView.Items.Add(newBlade);
         }
