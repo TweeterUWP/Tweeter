@@ -64,20 +64,19 @@ namespace Tweeter
                                 Text = temp
                             };
 
-                            Inline iline = runtemp;
-                            inlines.Add(iline);
+                            inlines.Add(runtemp as Inline);
                         }
 
                         Hyperlink link = new Hyperlink();
+                        link.UnderlineStyle = UnderlineStyle.None;
                         link.NavigateUri = new Uri("http://bing.com");
 
                         Run run = new Run();
                         run.Text = t.Tweet.Text.Substring(start, len);
 
                         link.Inlines.Add(run);
-
-                        Inline iline2 = link;
-                        inlines.Add(iline2);
+                        
+                        inlines.Add(link as Inline);
 
                         // set i to equal the end of the entity, so we know where to start the next block of text
                         i = end;
@@ -91,9 +90,8 @@ namespace Tweeter
                         {
                             Text = temp
                         };
-
-                        Inline iline = runtemp;
-                        inlines.Add(iline);
+                        
+                        inlines.Add(runtemp as Inline);
                     }
                     t.Inlines = inlines;
                 }
@@ -103,8 +101,7 @@ namespace Tweeter
                     Run runtemp = new Run { Text = t.Text };
 
                     List<Inline> inlines = new List<Inline>();
-                    Inline iline = runtemp;
-                    inlines.Add(iline);
+                    inlines.Add(runtemp);
                     t.Inlines = inlines;
                 }
             }
@@ -144,11 +141,14 @@ namespace Tweeter
             {
                 IList<BladeItem> bi = bladeView.ActiveBlades;
 
+                // maybe this works better wtih an Array instead of a List<T>? Who the hell even knows...
+                BladeItem[] blades = bi.ToArray();
+
                 try
                 {
                     // this SHOULD return the BladeItem named Tweet01, but it isn't.
                     // I don't know why.
-                    BladeItem theItem = bi.First(item => item.Name.Equals("Tweet01"));
+                    BladeItem theItem = blades.FirstOrDefault(item => item.Name == "Tweet01");
                 }
                 catch
                 {
