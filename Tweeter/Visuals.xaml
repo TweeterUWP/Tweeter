@@ -29,7 +29,7 @@
     </Style>
 
     <DataTemplate x:Key="TweetTemplate" x:DataType="tweeter:Tweet2">
-        <Grid Style="{StaticResource ListItemStyle}">
+        <Grid Style="{StaticResource ListItemStyle}" Tag="{x:Bind Path=Tweet.Id}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>

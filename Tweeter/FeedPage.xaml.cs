@@ -134,21 +134,42 @@ namespace Tweeter
             // populate listview with selected tweet
             newList.ItemsSource = FormatEntities(theTweet);
 
-            // if the sender is lstFeed and Tweet01 already exists, replace Tweet01 content
-            // if Tweet01 doesn't exist, create a new blade and populate it.
+            // if the sender is lstFeed and other blades exist, remove them all
+            // then create a new blade and populate it
+
+            // otherwise, find all blades after the sender's blade and remove them
+            // then create a new blade and populate it
+
+            // BladeItem > Grid > ListView
+            // Get sender ListView parent BladeItem name
+            // If BladeItem of name + 1 already exists, replace that blade's content
+            // If BladeItem of name + 1 doesn't exist, create a new blade
+
+            // when a blade is CLOSED, the tweet that spawned it should no longer be selected in the ListView
+            // pick the item by the Tag property - it will be the tweet ID
+
+            IList<BladeItem> bladeList = bladeView.ActiveBlades;
+
+            // FirstOrDefault doesn't work with lists; it only works with arrays
+            // so we need to convert our list to an array
+            BladeItem[] blades = bladeList.ToArray();
+
+            BladeItem currentBlade = (theSender.Parent as Grid).Parent as BladeItem;
 
             if (theSender.Name == "lstFeed")
             {
                 IList<BladeItem> bi = bladeView.ActiveBlades;
 
                 // maybe this works better wtih an Array instead of a List<T>? Who the hell even knows...
-                BladeItem[] blades = bi.ToArray();
+                BladeItem[] bladez = bi.ToArray();
+
+                BladeItem theItem = bladez.FirstOrDefault(item => item.Name == "Tweet04");
 
                 try
                 {
                     // this SHOULD return the BladeItem named Tweet01, but it isn't.
                     // I don't know why.
-                    BladeItem theItem = blades.FirstOrDefault(item => item.Name == "Tweet01");
+                    //BladeItem theItem = blades.FirstOrDefault(item => item.Name == "Tweet02");
                 }
                 catch
                 {
