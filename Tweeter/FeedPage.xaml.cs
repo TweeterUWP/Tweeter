@@ -109,7 +109,7 @@ namespace Tweeter
             return TweetList;
         }
 
-        private void lstFeed_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LoadBlade (object sender, SelectionChangedEventArgs e)
         {
             // instantiate sender into a listview object
             ListView theSender = (ListView)sender;
@@ -134,16 +134,10 @@ namespace Tweeter
             // populate listview with selected tweet
             newList.ItemsSource = FormatEntities(theTweet);
 
-            // if the sender is lstFeed and other blades exist, remove them all
+            // find all blades after the sender's blade and remove them
             // then create a new blade and populate it
 
-            // otherwise, find all blades after the sender's blade and remove them
-            // then create a new blade and populate it
-
-            // BladeItem > Grid > ListView
-            // Get sender ListView parent BladeItem name
-            // If BladeItem of name + 1 already exists, replace that blade's content
-            // If BladeItem of name + 1 doesn't exist, create a new blade
+            // BladeItem > ListView
 
             // when a blade is CLOSED, the tweet that spawned it should no longer be selected in the ListView
             // pick the item by the Tag property - it will be the tweet ID
@@ -152,89 +146,44 @@ namespace Tweeter
 
             // FirstOrDefault doesn't work with lists; it only works with arrays
             // so we need to convert our list to an array
-            BladeItem[] blades = bladeList.ToArray();
+            BladeItem[] activeBlades = bladeList.ToArray();
 
-            BladeItem currentBlade = (theSender.Parent as Grid).Parent as BladeItem;
 
-            if (theSender.Name == "lstFeed")
+            // this is the BladeItem that contains the selected ListViewItem
+            BladeItem currentBlade = theSender.Parent as BladeItem;
+
+            // the index of the current blade in the BladeView
+            int currentIndex = Array.IndexOf(activeBlades, currentBlade);
+
+            // everything after this index should be removed
+            for (int i = currentIndex + 1; i < activeBlades.Count(); i++)
             {
-                IList<BladeItem> bi = bladeView.ActiveBlades;
-
-                // maybe this works better wtih an Array instead of a List<T>? Who the hell even knows...
-                BladeItem[] bladez = bi.ToArray();
-
-                BladeItem theItem = bladez.FirstOrDefault(item => item.Name == "Tweet04");
-
                 try
                 {
-                    // this SHOULD return the BladeItem named Tweet01, but it isn't.
-                    // I don't know why.
-                    //BladeItem theItem = blades.FirstOrDefault(item => item.Name == "Tweet02");
+                     bladeView.Items.RemoveAt(i);
+                    //bladeView.Items.Remove(activeBlades[i]);
                 }
                 catch
                 {
-                    // ain't nothing there
+                    // do nothing
                 }
             }
 
             BladeItem newBlade = new BladeItem();
 
-            //newList.ItemTemplateSelector = (DataTemplateSelector)Resources["TweetTemplateSelector"];
             newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
-
-            newBlade.Content = newList;
-
-            newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
-
-            newBlade.Name = "Tweet01";
-
-            bladeView.Items.Add(newBlade);
-        }
-
-        private void lstFeed_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            LoadTweet(sender);
-        }
-
-        private void LoadTweet(object sender)
-        {
-            // instantiate sender into a listview object
-            ListView theSender = (ListView)sender;
-
-            //Load a blade for the selected tweet
-            //Tweet SelectedTweet = (sender as ListView).SelectedItem as Tweet;
-
-            Tweet SelectedTweet = theSender.SelectedItem as Tweet;
-
-            // Create a new list of Tweet objects
-            List<Tweet> theTweet = new List<Tweet>();
-
-            // Add selected tweet to list
-            theTweet.Add(SelectedTweet);
-
-            // create a new listview control
-            ListView newList = new ListView();
-
-            // populate listview with selected tweet
-            newList.ItemsSource = theTweet;
-
-            // if the sender is lstFeed and Tweet01 already exists, replace Tweet01 content
-            // if Tweet01 doesn't exist, create a new blade and populate it.
-
-            if (theSender.Name == "lstFeed")
-            {
-
-            }
-
-            BladeItem newBlade = new BladeItem();
-
-            newList.ItemTemplateSelector = (DataTemplateSelector)Resources["TweetTemplateSelector"];
+            newList.SelectionChanged += LoadBlade;
 
             newBlade.Content = newList;
 
             newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
 
             bladeView.Items.Add(newBlade);
+        }
+
+        private void UnloadBlade(object sender, BladeItem e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
