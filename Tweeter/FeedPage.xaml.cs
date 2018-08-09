@@ -111,79 +111,108 @@ namespace Tweeter
 
         private void LoadBlade (object sender, SelectionChangedEventArgs e)
         {
-            // instantiate sender into a listview object
-            ListView theSender = (ListView)sender;
-            //Load a blade for the selected tweet
-            //Tweet SelectedTweet = (sender as ListView).SelectedItem as Tweet;
-
-            Tweet2 SelectedTweet = (theSender.SelectedItem as Tweet2).ShallowCopy();
-
-
-            // Create a new list of Tweet objects
-            List<Tweet2> theTweet = new List<Tweet2>();
-
-            // Add selected tweet to list
-            theTweet.Add(SelectedTweet);
-
-            // TODO
-            // - use search API to retreive tweet responses. this will be inexact at best, but whatevs.
-
-            // create a new listview control
-            ListView newList = new ListView();
-
-            // populate listview with selected tweet
-            newList.ItemsSource = FormatEntities(theTweet);
-
-            // find all blades after the sender's blade and remove them
-            // then create a new blade and populate it
-
-            // BladeItem > ListView
-
-            // when a blade is CLOSED, the tweet that spawned it should no longer be selected in the ListView
-            // pick the item by the Tag property - it will be the tweet ID
-
-            IList<BladeItem> bladeList = bladeView.ActiveBlades;
-
-            // FirstOrDefault doesn't work with lists; it only works with arrays
-            // so we need to convert our list to an array
-            BladeItem[] activeBlades = bladeList.ToArray();
-
-
-            // this is the BladeItem that contains the selected ListViewItem
-            BladeItem currentBlade = theSender.Parent as BladeItem;
-
-            // the index of the current blade in the BladeView
-            int currentIndex = Array.IndexOf(activeBlades, currentBlade);
-
-            // everything after this index should be removed
-            for (int i = currentIndex + 1; i < activeBlades.Count(); i++)
+            // none of this should happen if sender is null
+            if (((ListView)sender).SelectedItem != null)
             {
-                try
+                // instantiate sender into a listview object
+                ListView theSender = (ListView)sender;
+                //Load a blade for the selected tweet
+                //Tweet SelectedTweet = (sender as ListView).SelectedItem as Tweet;
+
+                Tweet2 SelectedTweet = (theSender.SelectedItem as Tweet2).ShallowCopy();
+
+
+                // Create a new list of Tweet objects
+                List<Tweet2> theTweet = new List<Tweet2>();
+
+                // Add selected tweet to list
+                theTweet.Add(SelectedTweet);
+
+                // TODO
+                // - use search API to retreive tweet responses. this will be inexact at best, but whatevs.
+
+                // create a new listview control
+                ListView newList = new ListView();
+
+                // populate listview with selected tweet
+                newList.ItemsSource = FormatEntities(theTweet);
+
+                // find all blades after the sender's blade and remove them
+                // then create a new blade and populate it
+
+                // BladeItem > ListView
+
+                // when a blade is CLOSED, the tweet that spawned it should no longer be selected in the ListView
+                // pick the item by the Tag property - it will be the tweet ID
+
+                IList<BladeItem> bladeList = bladeView.ActiveBlades;
+
+                // FirstOrDefault doesn't work with lists; it only works with arrays
+                // so we need to convert our list to an array
+                BladeItem[] activeBlades = bladeList.ToArray();
+
+
+                // this is the BladeItem that contains the selected ListViewItem
+                BladeItem currentBlade = theSender.Parent as BladeItem;
+
+                // the index of the current blade in the BladeView
+                int currentIndex = Array.IndexOf(activeBlades, currentBlade);
+
+                // everything after this index should be removed
+                for (int i = currentIndex + 1; i < activeBlades.Count(); i++)
                 {
-                     bladeView.Items.RemoveAt(i);
-                    //bladeView.Items.Remove(activeBlades[i]);
+                    try
+                    {
+                        bladeView.Items.RemoveAt(i);
+                        bladeView.Items.Remove(activeBlades[i]);
+                    }
+                    catch
+                    {
+                        // do nothing
+                    }
                 }
-                catch
-                {
-                    // do nothing
-                }
+
+                BladeItem newBlade = new BladeItem();
+
+                newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
+                newList.SelectionChanged += LoadBlade;
+
+                newBlade.Content = newList;
+
+                newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
+
+                bladeView.Items.Add(newBlade);
             }
-
-            BladeItem newBlade = new BladeItem();
-
-            newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
-            newList.SelectionChanged += LoadBlade;
-
-            newBlade.Content = newList;
-
-            newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
-
-            bladeView.Items.Add(newBlade);
         }
 
         private void UnloadBlade(object sender, BladeItem e)
         {
-            throw new NotImplementedException();
+            // sender is the BladeView, e is the BladeItem itself
+            // get the current index
+            // index before the current index should invoke ListView.SelectedItems.Clear()
+
+            // active blades
+            IList<BladeItem> bladeList = bladeView.ActiveBlades;
+            BladeItem[] activeBlades = bladeList.ToArray();
+
+            // blade to be unloaded
+            BladeItem currentBlade = e;
+
+            // index of blade to be unloaded
+            int currentIndex = Array.IndexOf(activeBlades, currentBlade);
+
+            // index of previous blade in ActiveBlades
+            int previousIndex = currentIndex - 1;
+
+            // previous BladeItem
+            BladeItem previousBlade = activeBlades[previousIndex];
+
+            // ListView contained in previous BladeItem
+            ListView previousList = previousBlade.Content as ListView;
+
+            // Clear selected item in ListView
+            // previousList.SelectedItems.Clear();
+            previousList.SelectedItem = null;
         }
     }
 }
