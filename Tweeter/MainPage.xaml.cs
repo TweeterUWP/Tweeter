@@ -61,17 +61,16 @@ namespace Tweeter
         private void LoadMenu()
         {
             List <MenuItem> theMenu = new List<MenuItem>();
-            MenuItem m = new MenuItem { Icon = (new FontAwesome { Glyph = "&#xf099;" }), Tag = "Feed", Label = "Twitter Feed", PageType=typeof(FeedPage) };
+            MenuItem m = new MenuItem { Glyph = "&#xf099;", Tag = "Feed", Label = "Twitter Feed", PageType=typeof(FeedPage) };
 
             theMenu.Add(m);
             navMain.ItemsSource = theMenu;
         }
 	}
 
-    public class MenuItem : HamburgerMenuItem
+    public class MenuItem : HamburgerMenuGlyphItem
     {
         public Type PageType { get; set; }
-        public FontAwesome Icon { get; set; }
     }
 
     public class FontAwesome : FontIcon
