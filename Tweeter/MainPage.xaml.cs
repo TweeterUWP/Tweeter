@@ -13,8 +13,6 @@ using Windows.Web.Http.Headers;
 using Microsoft.Toolkit.Uwp.Services.Twitter;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Toolkit.Uwp.UI.Controls;
-using Windows.UI.Xaml.Media;
 
 namespace Tweeter
 {
@@ -42,7 +40,15 @@ namespace Tweeter
 				// this means login was successful
 				// load the twitter feed at launch
 				ContentFrame.Navigate(typeof(FeedPage));
-                LoadMenu();
+
+				// change the navMain selected item to Feed
+				// this is for UX completeness...otherwise the selected bar won't appear in the right place in navMain
+				// sauce: https://stackoverflow.com/questions/48361741/windows-10-uwp-navigationview-update-selected-menuitem-on-backnavigation
+				var pageName = "Feed";
+				//find menu item that has the matching tag
+				var menuItem = navMain.MenuItems.OfType<NavigationViewItem>().Where(item => item.Tag.ToString() == pageName).First();
+				//select
+				navMain.SelectedItem = menuItem;
 			}
 			else
 			{
@@ -52,33 +58,27 @@ namespace Tweeter
 			}
 		}
 
-		private void navMain_ItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
+		private void navMain_Invoke(NavigationView sender, NavigationViewItemInvokedEventArgs args)
 		{
-            MenuItem item = e.InvokedItem as MenuItem;
-            ContentFrame.Navigate(item.PageType);
+			if (args.IsSettingsInvoked)
+			{
+				ContentFrame.Navigate(typeof(SettingsPage));
+			}
+			else
+			{
+				// find NavigationViewItem with Content that equals InvokedItem
+				var item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+				navMain_Navigate(item as NavigationViewItem);
+			}
 		}
-
-        private void LoadMenu()
-        {
-            List <MenuItem> theMenu = new List<MenuItem>();
-            MenuItem m = new MenuItem { Icon = (new FontAwesome { Glyph = "&#xf099;" }), Tag = "Feed", Label = "Twitter Feed", PageType=typeof(FeedPage) };
-
-            theMenu.Add(m);
-            navMain.ItemsSource = theMenu;
-        }
+		private void navMain_Navigate(NavigationViewItem item)
+		{
+			switch (item.Tag)
+			{
+				case "Feed":
+					ContentFrame.Navigate(typeof(FeedPage));
+					break;
+			}
+		}
 	}
-
-    public class MenuItem : HamburgerMenuItem
-    {
-        public Type PageType { get; set; }
-        public FontAwesome Icon { get; set; }
-    }
-
-    public class FontAwesome : FontIcon
-    {
-        public FontAwesome()
-        {
-            this.FontFamily = new FontFamily("./Assets/Fonts/FontAwesome.otf");
-        }
-    }
 }

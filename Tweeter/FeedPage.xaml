@@ -31,7 +31,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ct:BladeView x:Name="bladeView" BladeClosed="UnloadBlade">
-            <ct:BladeItem x:Name="bldHome" IsOpen="True" TitleBarVisibility="Collapsed" BorderThickness="0" Style="{StaticResource BladeStyle}" Margin="0 28 0 0">
+            <ct:BladeItem x:Name="bldHome" Tag="blade-00" IsOpen="True" TitleBarVisibility="Collapsed" BorderThickness="0" Style="{StaticResource BladeStyle}" Margin="0 28 0 0">
                 <ListView x:Name="lstFeed" Width="430" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" 
                     SelectionChanged="LoadBlade" ItemTemplate="{StaticResource TweetTemplate}" />
             </ct:BladeItem>
