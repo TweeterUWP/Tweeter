@@ -15,10 +15,10 @@
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
 	<Style x:Key="BladeStyle" TargetType="ct:BladeItem">
-		<Setter Property="Width" Value="430"/>
+		<!--<Setter Property="Width" Value="430"/>-->
 	</Style>
     <Style x:Key="ListItemStyle" TargetType="Grid">
-        <Setter Property="Width" Value="400" />
+        <!--<Setter Property="Width" Value="400" />-->
         <Setter Property="MinHeight" Value="50" />
     </Style>
     <Style x:Key="MetaButtons" TargetType="Button">
@@ -30,6 +30,26 @@
 
     <DataTemplate x:Key="TweetTemplate" x:DataType="tweeter:Tweet2">
         <Grid Style="{StaticResource ListItemStyle}" Tag="{x:Bind Path=Tweet.Id}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="mobile">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="bladeView.BladeMode" Value="Fullscreen" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="desktop">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="600" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="bladeView.BladeMode" Value="Normal" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
