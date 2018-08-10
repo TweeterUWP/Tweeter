@@ -1,25 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.Security.Authentication.Web;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
-using Windows.Storage.Streams;
-using Windows.UI.Core;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.Web.Http;
-using Windows.Web.Http.Headers;
-using Microsoft.Toolkit.Uwp.Services.Twitter;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using Microsoft.UI.Xaml.Controls;
 
 namespace Tweeter
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class MainPage : Page
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : Windows.UI.Xaml.Controls.Page
 	{
 		public MainPage()
 		{

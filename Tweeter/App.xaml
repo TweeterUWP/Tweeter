@@ -6,7 +6,8 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<local:Visuals/>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
+                <local:Visuals/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

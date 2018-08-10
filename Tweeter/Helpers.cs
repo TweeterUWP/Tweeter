@@ -107,8 +107,8 @@ namespace Tweeter.Utils {
 			// set parameters
             // I'm going to have to do something about this so I'm not exposing the API key on GitHub...
 			string CallbackUri = "app://";
-			string ConsumerKey = "MhpRmlMvGTaVrs2cTPMPzGRKB";
-			string ConsumerSecret = "jpbqyiLzv35x3gD6VpdjSEgrhu9p8T0q0yorjYlAf0nNPdOwB8";
+			string ConsumerKey = "wcr5BhtrFwWfqvEp17wbFheSW";
+			string ConsumerSecret = "XmwC7ru4epkJ7UEOEQv0KE6gQLNAOjrTAfsW6xCUJseAfvfhnO";
 
 			// create an instance of the Twitter service
 			TwitterService.Instance.Initialize(ConsumerKey, ConsumerSecret, CallbackUri);
@@ -135,6 +135,7 @@ namespace Tweeter.Utils {
                     {
                         await new MessageDialog("Access token expired! Logging out.").ShowAsync();
                         TwitterService.Instance.Logout();
+                        TwitterLogin();
                         return;
                     }
                     else

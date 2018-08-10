@@ -3,45 +3,46 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="using:Microsoft.UI.Xaml.Controls"
 	mc:Ignorable="d"
 	x:Class="Tweeter.MainPage"
 	x:Name="PageMain">
 	
-	<NavigationView x:Name="navMain" ItemInvoked="navMain_Invoke">
+	<ct:NavigationView x:Name="navMain" ItemInvoked="navMain_Invoke">
 
-		<NavigationView.MenuItems>
-			<NavigationViewItem x:Name="navFeed" x:Uid="navFeed" Content="Twitter Feed" Tag="Feed">
-				<NavigationViewItem.Icon>
+		<ct:NavigationView.MenuItems>
+			<ct:NavigationViewItem x:Name="navFeed" x:Uid="navFeed" Content="Twitter Feed" Tag="Feed">
+				<ct:NavigationViewItem.Icon>
 					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf099;"/>
-				</NavigationViewItem.Icon>
-			</NavigationViewItem>
-			<NavigationViewItem x:Name="navNotify" x:Uid="navNotify" Content="Notifications" Tag="Notifications">
-				<NavigationViewItem.Icon>
+				</ct:NavigationViewItem.Icon>
+			</ct:NavigationViewItem>
+			<ct:NavigationViewItem x:Name="navNotify" x:Uid="navNotify" Content="Notifications" Tag="Notifications">
+				<ct:NavigationViewItem.Icon>
 					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0f3;"/>
-				</NavigationViewItem.Icon>
-			</NavigationViewItem>
-			<NavigationViewItem x:Name="navInbox" x:Uid="navInbox" Content="Messages" Tag="Inbox">
-				<NavigationViewItem.Icon>
+				</ct:NavigationViewItem.Icon>
+			</ct:NavigationViewItem>
+			<ct:NavigationViewItem x:Name="navInbox" x:Uid="navInbox" Content="Messages" Tag="Inbox">
+				<ct:NavigationViewItem.Icon>
 					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0e0;"/>
-				</NavigationViewItem.Icon>
-			</NavigationViewItem>
-			<NavigationViewItem x:Name="navMoments" x:Uid="navMoments" Content="Moments" Tag="Moments">
-				<NavigationViewItem.Icon>
+				</ct:NavigationViewItem.Icon>
+			</ct:NavigationViewItem>
+			<ct:NavigationViewItem x:Name="navMoments" x:Uid="navMoments" Content="Moments" Tag="Moments">
+				<ct:NavigationViewItem.Icon>
 					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf0e7;"/>
-				</NavigationViewItem.Icon>
-			</NavigationViewItem>
-			<NavigationViewItem x:Name="navProfile" x:Uid="navProfile" Content="Twitter Profile" Tag="Profile">
-				<NavigationViewItem.Icon>
+				</ct:NavigationViewItem.Icon>
+			</ct:NavigationViewItem>
+			<ct:NavigationViewItem x:Name="navProfile" x:Uid="navProfile" Content="Twitter Profile" Tag="Profile">
+				<ct:NavigationViewItem.Icon>
 					<FontIcon FontFamily="{StaticResource FontAwesome}" Glyph="&#xf007;"/>
-				</NavigationViewItem.Icon>
-			</NavigationViewItem>
-        </NavigationView.MenuItems>
+				</ct:NavigationViewItem.Icon>
+			</ct:NavigationViewItem>
+        </ct:NavigationView.MenuItems>
 
-		<!--<NavigationView.AutoSuggestBox>
+		<!--<ct:NavigationView.AutoSuggestBox>
 			<AutoSuggestBox x:Name="ASB" QueryIcon="Find"/>
-		</NavigationView.AutoSuggestBox>-->
+		</ct:NavigationView.AutoSuggestBox>-->
 
-		<!--<NavigationView.HeaderTemplate>
+		<!--<ct:NavigationView.HeaderTemplate>
 			<DataTemplate>
 				<Grid Margin="24,10,0,0">
 					<Grid.ColumnDefinitions>
@@ -61,7 +62,7 @@
 					</CommandBar>
 				</Grid>
 			</DataTemplate>
-		</NavigationView.HeaderTemplate>-->
+		</ct:NavigationView.HeaderTemplate>-->
 
 		<Frame x:Name="ContentFrame" Margin="0">
 
@@ -71,5 +72,5 @@
 				</TransitionCollection>
 			</Frame.ContentTransitions>
 		</Frame>
-	</NavigationView>
+	</ct:NavigationView>
 </Page>
