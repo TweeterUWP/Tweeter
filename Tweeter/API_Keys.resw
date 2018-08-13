@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="key" xml:space="preserve">
-    <value>test1</value>
+    <value />
     <comment>Consumer API key</comment>
   </data>
   <data name="secret" xml:space="preserve">
-    <value>test2</value>
+    <value />
     <comment>Consumer API secret</comment>
   </data>
 </root>
