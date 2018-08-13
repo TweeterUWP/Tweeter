@@ -15,10 +15,11 @@
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
 	<Style x:Key="BladeStyle" TargetType="ct:BladeItem">
-		<!--<Setter Property="Width" Value="430"/>-->
-	</Style>
+		<Setter Property="Width" Value="430"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
     <Style x:Key="ListItemStyle" TargetType="Grid">
-        <!--<Setter Property="Width" Value="400" />-->
+        <Setter Property="Width" Value="400" />
         <Setter Property="MinHeight" Value="50" />
     </Style>
     <Style x:Key="MetaButtons" TargetType="Button">

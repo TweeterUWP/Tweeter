@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -105,10 +106,12 @@ namespace Tweeter.Utils {
 		public async void TwitterLogin()
 		{
 			// set parameters
-            // I'm going to have to do something about this so I'm not exposing the API key on GitHub...
 			string CallbackUri = "app://";
-			string ConsumerKey = "wcr5BhtrFwWfqvEp17wbFheSW";
-			string ConsumerSecret = "XmwC7ru4epkJ7UEOEQv0KE6gQLNAOjrTAfsW6xCUJseAfvfhnO";
+
+            // pull the API key and secret from API_Keys.resw
+            ResourceLoader resources = ResourceLoader.GetForViewIndependentUse("API_Keys");
+            string ConsumerKey = resources.GetString("key");
+            string ConsumerSecret = resources.GetString("secret");
 
 			// create an instance of the Twitter service
 			TwitterService.Instance.Initialize(ConsumerKey, ConsumerSecret, CallbackUri);
