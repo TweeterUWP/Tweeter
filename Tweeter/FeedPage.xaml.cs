@@ -132,6 +132,7 @@ namespace Tweeter
 
                 // create a new listview control
                 ListView newList = new ListView();
+                newList.Name = "lstFeed";
 
                 // populate listview with selected tweet
                 newList.ItemsSource = FormatEntities(theTweet);
@@ -142,6 +143,8 @@ namespace Tweeter
 
                 BladeItem newBlade = new BladeItem();
 
+                newBlade.Name = "bldHome";
+
                 newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
                 newList.SelectionChanged += LoadBlade;
 
@@ -150,6 +153,8 @@ namespace Tweeter
                 newBlade.Style = (Style)App.Current.Resources["BladeStyle"];
 
                 bladeView.Items.Add(newBlade);
+
+                // TODO: scroll bladeView to newly-created blade.
             }
         }
 

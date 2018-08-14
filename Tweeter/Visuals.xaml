@@ -14,12 +14,12 @@
 
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
 
-	<Style x:Key="BladeStyle" TargetType="ct:BladeItem">
-		<Setter Property="Width" Value="430"/>
+    <Style x:Key="BladeStyle" TargetType="ct:BladeItem">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
     <Style x:Key="ListItemStyle" TargetType="Grid">
-        <Setter Property="Width" Value="400" />
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="MinHeight" Value="50" />
     </Style>
     <Style x:Key="MetaButtons" TargetType="Button">
@@ -28,9 +28,12 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
     </Style>
+    <Style TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
 
     <DataTemplate x:Key="TweetTemplate" x:DataType="tweeter:Tweet2">
-        <Grid Style="{StaticResource ListItemStyle}" Tag="{x:Bind Path=Tweet.Id}">
+        <Grid Style="{StaticResource ListItemStyle}" Tag="{x:Bind Path=Tweet.Id}" x:Name="grdTweets" HorizontalAlignment="Stretch">
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup>
                     <VisualState x:Name="mobile">
@@ -39,11 +42,12 @@
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
                             <Setter Target="bladeView.BladeMode" Value="Fullscreen" />
+                            <Setter Target="grdTweets.HorizontalAlignment" Value="Stretch" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="desktop">
                         <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="600" />
+                            <AdaptiveTrigger MinWindowWidth="640" />
                         </VisualState.StateTriggers>
                         <VisualState.Setters>
                             <Setter Target="bladeView.BladeMode" Value="Normal" />
@@ -86,7 +90,7 @@
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*" MaxWidth="100"/>
+                    <ColumnDefinition Width="2.5*"/>
                     <ColumnDefinition Width="2.5*"/>
                     <ColumnDefinition Width="2.5*"/>
                     <ColumnDefinition Width="2.5*"/>
