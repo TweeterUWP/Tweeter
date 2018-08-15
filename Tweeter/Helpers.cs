@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
@@ -13,6 +13,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
+using Windows.Data.Json;
+using Windows.Data.Html;
+using HtmlAgilityPack;
+using Windows.Web.Http;
 
 namespace Tweeter.Converters
 {
@@ -205,6 +209,59 @@ namespace Tweeter.Utils {
                 return Tweets;
             }
         }
+
+        public async Task<List<Tweet2>> GetTweetRepliesAsync(TwitterUser theUser, string theTweetId)
+        {
+            List<Tweet2> tweets = new List<Tweet2>();
+
+            Uri requestUri = new Uri("https://twitter.com/i/" + theUser.ScreenName + "/conversation/" + theTweetId +
+                "?include_available_features=1&include_entitites&reset_error_state=false&max_position=" + theTweetId);
+
+            HttpClient httpClient = new HttpClient();
+
+            
+            //var responseBody = "";
+
+            try
+            {                
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUri);
+                httpResponse.EnsureSuccessStatusCode();
+
+                // if the response is a 404, the tweet is gone or protected
+                if (httpResponse.StatusCode != HttpStatusCode.NotFound)
+                {
+                    // this is a json file
+                    string result = await httpClient.GetStringAsync(requestUri);
+
+                    // parse the result into a JsonObject
+                    JsonObject theJson = JsonObject.Parse(result);
+
+                    // this is unnecessary if I can figure out how to deserialize JsonObject into an object.
+                    bool hasMore = theJson["has_more_items"].GetBoolean();
+                    string rawText = theJson["items_html"].GetString();
+                    string nextKey = theJson["min_position"].GetString();
+
+                    // this might make it easier to traverse the stupid HTML Twitter returns.
+                    // ...maybe.
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.Load(rawText);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return tweets;
+        }
+    }
+
+    public class TwitterJson
+    {
+        bool hasMore { get; set; }
+        string rawText { get; set; }
+        string nextKey { get; set; }
     }
 
     public static class InlineXaml

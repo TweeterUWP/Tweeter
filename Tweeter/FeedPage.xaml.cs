@@ -6,7 +6,6 @@ using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.Services.Twitter;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Documents;
-using Windows.Foundation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -110,7 +109,7 @@ namespace Tweeter
             return TweetList;
         }
 
-        private void LoadBlade (object sender, SelectionChangedEventArgs e)
+        private async void LoadBlade (object sender, SelectionChangedEventArgs e)
         {
             // instantiate sender into a listview object
             ListView theSender = (ListView)sender;
@@ -119,11 +118,17 @@ namespace Tweeter
 
             if (theSender.SelectedItem != null)
             {
+                // this needs to go away at some point
                 Tweet2 SelectedTweet = (theSender.SelectedItem as Tweet2).ShallowCopy();
-
 
                 // Create a new list of Tweet objects
                 List<Tweet2> theTweet = new List<Tweet2>();
+
+                TwitterUser theUser = SelectedTweet.Tweet.User;
+                string theTweetId = SelectedTweet.Tweet.Id;
+
+                Utils.Loaders Loader = new Utils.Loaders();
+                List<Tweet2> theTweets = await Loader.GetTweetRepliesAsync(theUser, theTweetId);
 
                 // Add selected tweet to list
                 theTweet.Add(SelectedTweet);
@@ -160,17 +165,11 @@ namespace Tweeter
                 // TODO: scroll bladeView to newly-created blade.
                 if (bladeView.BladeMode == BladeMode.Fullscreen)
                 {
-                    // current window width
-                    Rect windowBounds = Window.Current.Bounds;
-                    int currentWidth = (int)windowBounds.Width;
+                    // update the layout so StartBringIntoView() works
+                    bladeView.UpdateLayout();
 
-                    // scroll to view
-                    BringIntoViewOptions opts = new BringIntoViewOptions();
-                    Rect target = new Rect { Height = windowBounds.Height, Width = windowBounds.Width, X = currentWidth, Y = 0 };
-                    opts.TargetRect = target;
-
-                    // this doesn't actually do anything
-                    newBlade.StartBringIntoView(opts);
+                    // scroll BladeView to newly-created BladeItem
+                    newBlade.StartBringIntoView();
                 }
             }
         }
