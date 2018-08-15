@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp.Services.Twitter;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Documents;
+using Windows.Foundation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -133,6 +134,7 @@ namespace Tweeter
                 // create a new listview control
                 ListView newList = new ListView();
                 newList.Name = "lstFeed";
+                newList.Margin = new Thickness{ Bottom=0, Top=7, Left=0, Right=0 };
 
                 // populate listview with selected tweet
                 newList.ItemsSource = FormatEntities(theTweet);
@@ -144,6 +146,7 @@ namespace Tweeter
                 BladeItem newBlade = new BladeItem();
 
                 newBlade.Name = "bldHome";
+                newBlade.Width = 430;
 
                 newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
                 newList.SelectionChanged += LoadBlade;
@@ -155,6 +158,20 @@ namespace Tweeter
                 bladeView.Items.Add(newBlade);
 
                 // TODO: scroll bladeView to newly-created blade.
+                if (bladeView.BladeMode == BladeMode.Fullscreen)
+                {
+                    // current window width
+                    Rect windowBounds = Window.Current.Bounds;
+                    int currentWidth = (int)windowBounds.Width;
+
+                    // scroll to view
+                    BringIntoViewOptions opts = new BringIntoViewOptions();
+                    Rect target = new Rect { Height = windowBounds.Height, Width = windowBounds.Width, X = currentWidth, Y = 0 };
+                    opts.TargetRect = target;
+
+                    // this doesn't actually do anything
+                    newBlade.StartBringIntoView(opts);
+                }
             }
         }
 
