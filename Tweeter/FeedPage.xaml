@@ -18,25 +18,22 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="bladeView.BladeMode" Value="Fullscreen" />
-                        <Setter Target="lstFeed.HorizontalAlignment" Value="Stretch"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="desktop">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640" />
+                        <AdaptiveTrigger MinWindowWidth="600" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="bladeView.BladeMode" Value="Normal" />
-                        <Setter Target="bldHome.Width" Value="430"/>
-                        <Setter Target="lstFeed.Width" Value="430"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ct:BladeView x:Name="bladeView" BladeClosed="UnloadBlade">
             <ct:BladeItem x:Name="bldHome" Tag="blade-00" IsOpen="True" TitleBarVisibility="Collapsed" BorderThickness="0" Style="{StaticResource BladeStyle}" Margin="0 28 0 0">
-                <ListView x:Name="lstFeed" VerticalAlignment="Top" Padding="0 0 0 0" 
-                    SelectionChanged="LoadBlade" ItemTemplate="{StaticResource TweetTemplate}" HorizontalContentAlignment="Stretch" />
+                <ListView x:Name="lstFeed" Width="430" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" 
+                    SelectionChanged="LoadBlade" ItemTemplate="{StaticResource TweetTemplate}" />
             </ct:BladeItem>
         </ct:BladeView>
 
