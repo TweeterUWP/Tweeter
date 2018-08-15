@@ -13,7 +13,5 @@ namespace Tweeter
         {
             InitializeComponent();
         }
-
-        public bool Not(bool? value) { return true; }
     }
 }
