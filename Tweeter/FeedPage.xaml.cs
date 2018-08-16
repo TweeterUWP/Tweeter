@@ -109,7 +109,7 @@ namespace Tweeter
             return TweetList;
         }
 
-        private void LoadBlade (object sender, SelectionChangedEventArgs e)
+        private async void LoadBlade (object sender, SelectionChangedEventArgs e)
         {
             // instantiate sender into a listview object
             ListView theSender = (ListView)sender;
@@ -118,11 +118,17 @@ namespace Tweeter
 
             if (theSender.SelectedItem != null)
             {
+                // this needs to go away at some point
                 Tweet2 SelectedTweet = (theSender.SelectedItem as Tweet2).ShallowCopy();
-
 
                 // Create a new list of Tweet objects
                 List<Tweet2> theTweet = new List<Tweet2>();
+
+                TwitterUser theUser = SelectedTweet.Tweet.User;
+                string theTweetId = SelectedTweet.Tweet.Id;
+
+                Utils.Loaders Loader = new Utils.Loaders();
+                List<Tweet2> theTweets = await Loader.GetTweetRepliesAsync(theUser, theTweetId);
 
                 // Add selected tweet to list
                 theTweet.Add(SelectedTweet);
@@ -133,6 +139,7 @@ namespace Tweeter
                 // create a new listview control
                 ListView newList = new ListView();
                 newList.Name = "lstFeed";
+                newList.Margin = new Thickness{ Bottom=0, Top=7, Left=0, Right=0 };
 
                 // populate listview with selected tweet
                 newList.ItemsSource = FormatEntities(theTweet);
@@ -144,6 +151,7 @@ namespace Tweeter
                 BladeItem newBlade = new BladeItem();
 
                 newBlade.Name = "bldHome";
+                newBlade.Width = 430;
 
                 newList.ItemTemplate = (DataTemplate)App.Current.Resources["TweetTemplate"];
                 newList.SelectionChanged += LoadBlade;
@@ -155,6 +163,14 @@ namespace Tweeter
                 bladeView.Items.Add(newBlade);
 
                 // TODO: scroll bladeView to newly-created blade.
+                if (bladeView.BladeMode == BladeMode.Fullscreen)
+                {
+                    // update the layout so StartBringIntoView() works
+                    bladeView.UpdateLayout();
+
+                    // scroll BladeView to newly-created BladeItem
+                    newBlade.StartBringIntoView();
+                }
             }
         }
 
