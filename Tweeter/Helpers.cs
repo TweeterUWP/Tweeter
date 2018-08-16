@@ -17,6 +17,7 @@ using Windows.Data.Json;
 using Windows.Data.Html;
 using HtmlAgilityPack;
 using Windows.Web.Http;
+using Fizzler.Systems.HtmlAgilityPack;
 
 namespace Tweeter.Converters
 {
@@ -230,6 +231,10 @@ namespace Tweeter.Utils {
                 // if the response is a 404, the tweet is gone or protected
                 if (httpResponse.StatusCode != HttpStatusCode.NotFound)
                 {
+                    bool hasMore = new bool();
+                    string rawText = "";
+                    string nextKey = null;
+
                     // this is a json file
                     string result = await httpClient.GetStringAsync(requestUri);
 
@@ -237,14 +242,42 @@ namespace Tweeter.Utils {
                     JsonObject theJson = JsonObject.Parse(result);
 
                     // this is unnecessary if I can figure out how to deserialize JsonObject into an object.
-                    bool hasMore = theJson["has_more_items"].GetBoolean();
-                    string rawText = theJson["items_html"].GetString();
-                    string nextKey = theJson["min_position"].GetString();
+                    hasMore = theJson.GetNamedBoolean("has_more_items");
+                    rawText = theJson.GetNamedString("items_html");
+                    nextKey = theJson.GetNamedString("min_position");
+
+                    while (nextKey == null)
+                    {
+                        // this is a json file
+                        result = await httpClient.GetStringAsync(requestUri);
+
+                        // parse the result into a JsonObject
+                        theJson = JsonObject.Parse(result);
+
+                        // this is unnecessary if I can figure out how to deserialize JsonObject into an object.
+                        hasMore = theJson.GetNamedBoolean("has_more_items");
+                        rawText = theJson.GetNamedString("items_html");
+                        nextKey = theJson.GetNamedString("min_position");
+                    }
+
+                    string test = "Testing";
 
                     // this might make it easier to traverse the stupid HTML Twitter returns.
                     // ...maybe.
-                    HtmlDocument doc = new HtmlDocument();
-                    doc.Load(rawText);
+                    string rawText2 = rawText.Replace("\\n", "").Replace("\\\"", "\"");
+
+                    HtmlDocument html = new HtmlDocument();
+                    html.LoadHtml(rawText);
+
+                    var doc = html.DocumentNode;
+
+                    var v = doc.QuerySelectorAll("li[class^=ThreadedConversation]");
+
+                    // v[0].Attributes = IList<HtmlAttribute>
+                    // v[0].Attributes[0].DeEntitizeValue = CSS class
+                    // use another QuerySelectorAll to get the data we need
+
+                    // does this work for protected accounts if I can see the account's tweets?
                 }
 
             }
