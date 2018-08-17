@@ -220,9 +220,6 @@ namespace Tweeter.Utils {
 
             HttpClient httpClient = new HttpClient();
 
-            
-            //var responseBody = "";
-
             try
             {                
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUri);
@@ -244,7 +241,9 @@ namespace Tweeter.Utils {
                     // this is unnecessary if I can figure out how to deserialize JsonObject into an object.
                     hasMore = theJson.GetNamedBoolean("has_more_items");
                     rawText = theJson.GetNamedString("items_html");
-                    nextKey = theJson.GetNamedString("min_position");
+
+                    if (hasMore == true)
+                        nextKey = theJson.GetNamedString("min_position");
 
                     while (nextKey == null)
                     {
@@ -257,10 +256,10 @@ namespace Tweeter.Utils {
                         // this is unnecessary if I can figure out how to deserialize JsonObject into an object.
                         hasMore = theJson.GetNamedBoolean("has_more_items");
                         rawText = theJson.GetNamedString("items_html");
-                        nextKey = theJson.GetNamedString("min_position");
-                    }
 
-                    string test = "Testing";
+                        if (hasMore == true)
+                            nextKey = theJson.GetNamedString("min_position");
+                    }
 
                     // this might make it easier to traverse the stupid HTML Twitter returns.
                     // ...maybe.
@@ -271,7 +270,20 @@ namespace Tweeter.Utils {
 
                     var doc = html.DocumentNode;
 
-                    var v = doc.QuerySelectorAll("li[class^=ThreadedConversation]");
+                    IEnumerable<HtmlNode> docNodes = (IEnumerable<HtmlNode>)doc.QuerySelectorAll("li[class^=ThreadedConversation]");
+
+                    List<HtmlNode> nodes = docNodes.ToList<HtmlNode>();
+
+                    foreach(HtmlNode node in docNodes)
+                    {
+                        string css = node.Attributes[0].DeEntitizeValue;
+
+                        if(css.IndexOf("moreReplies") == -1)
+                        {
+                            // this is a reply! do things!
+
+                        }
+                    }
 
                     // v[0].Attributes = IList<HtmlAttribute>
                     // v[0].Attributes[0].DeEntitizeValue = CSS class

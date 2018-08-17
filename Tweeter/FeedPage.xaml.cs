@@ -127,6 +127,8 @@ namespace Tweeter
                 TwitterUser theUser = SelectedTweet.Tweet.User;
                 string theTweetId = SelectedTweet.Tweet.Id;
 
+                // we don't have to do this if there aren't any responses
+                // but Twitter won't let us know this information without paying the big bucks
                 Utils.Loaders Loader = new Utils.Loaders();
                 List<Tweet2> theTweets = await Loader.GetTweetRepliesAsync(theUser, theTweetId);
 
