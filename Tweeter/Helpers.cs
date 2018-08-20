@@ -216,7 +216,7 @@ namespace Tweeter.Utils {
             List<Tweet2> tweets = new List<Tweet2>();
 
             Uri requestUri = new Uri("https://twitter.com/i/" + theUser.ScreenName + "/conversation/" + theTweetId +
-                "?include_available_features=1&include_entitites&reset_error_state=false&max_position=" + theTweetId);
+                "?include_available_features=1&include_entitites=true&reset_error_state=false&max_position=" + theTweetId);
 
             HttpClient httpClient = new HttpClient();
 

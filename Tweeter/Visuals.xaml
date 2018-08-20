@@ -13,6 +13,7 @@
     <conv:GetTweet x:Name="GetTweet"/>
 
     <FontFamily x:Key="FontAwesome">ms-appx:///Assets/fonts/FontAwesome.otf#FontAwesome</FontFamily>
+    <FontFamily x:Key="FontAwesome2">ms-appx:///Assets/fonts/FA5Pro.otf#FontAwesome</FontFamily>
 
     <Style x:Key="BladeStyle" TargetType="ct:BladeItem">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>

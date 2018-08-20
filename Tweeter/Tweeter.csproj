@@ -125,6 +125,7 @@
     </AppxManifest>
     <Content Include="Assets\Fonts\FontAwesome.otf" />
     <PRIResource Include="API_Keys.resw" />
+    <Content Include="Assets\Fonts\FA5Pro.otf" />
     <None Include="Tweeter_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
